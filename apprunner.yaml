@@ -1,4 +1,5 @@
 version: 1.0
+runtime: nodejs22
 
 build:
   commands:
@@ -15,4 +16,3 @@ run:
       value: production
     - name: MEDUSA_ADMIN_BACKEND_URL
       value: https://api.myshop.com
-

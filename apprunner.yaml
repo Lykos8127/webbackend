@@ -1,0 +1,18 @@
+version: 1.0
+
+build:
+  commands:
+    pre-build:
+      - npm ci --include=dev
+    build:
+      - npx medusa build --admin-only
+
+run:
+  command: ["npx", "medusa", "start"]
+  port: 9000
+  env:
+    - name: NODE_ENV
+      value: production
+    - name: MEDUSA_ADMIN_BACKEND_URL
+      value: https://api.myshop.com
+

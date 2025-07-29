@@ -4,7 +4,8 @@ runtime: nodejs22
 build:
   commands:
     pre-build:
-      - npm ci --include=dev
+      - rm -rf node_modules package-lock.json
+      - npm install --include=dev
     build:
       - npx medusa build
 

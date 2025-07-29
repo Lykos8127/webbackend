@@ -6,7 +6,7 @@ build:
     pre-build:
       - npm ci --include=dev
     build:
-      - npx medusa build --admin-only
+      - npx medusa build
 
 run:
   command: npx medusa start

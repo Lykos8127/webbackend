@@ -12,10 +12,13 @@ build:
 run:
   command: npx medusa start
   env:
-    - name: NODE_ENV
-      value: production
-    - name: MEDUSA_ADMIN_BACKEND_URL
-      value: https://api.myshop.com
+  - name: NODE_ENV
+    value: production
+  - name: MEDUSA_ADMIN_BACKEND_URL
+    value: https://api.myshop.com
+  - name: MEDUSA_PORT
+    value: "8080"
+  - name: DATABASE_URL
+      value: DATABASE_URL=postgres://postgres:E_b09.lgR@database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com:5432/database-1?sslmode=require&sslrootcert=./certs/rds-ca-bundle.pem
 
-    - name: MEDUSA_PORT
-      value: "8080"
+  

@@ -7,7 +7,8 @@ build:
       - rm -rf node_modules package-lock.json
       - npm install --include=dev
     build:
-      - npx medusa build
+      - npm ci --include=dev
+      - npx medusa build    
 
 run:
   command: npx medusa start

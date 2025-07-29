@@ -8,8 +8,7 @@ build:
       - npm install --include=dev
     build:
       - npm ci --include=dev
-      - npx medusa build         # backend
-      - npx medusa-admin build --deployment   # standalone admin build
+      - npx medusa build    
 
 run:
   command: npx medusa start

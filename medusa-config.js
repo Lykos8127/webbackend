@@ -1,3 +1,19 @@
 // medusa-config.js
-require("ts-node").register({ transpileOnly: true });
-module.exports = require("./medusa-config.ts").default || require("./medusa-config.ts");
+/** @type {import('@medusajs/medusa').PluginOptions[]} */
+const plugins = [
+  {
+    resolve: "@medusajs/admin",
+    options: {
+      serve: true,
+      outDir: ".medusa/server/public/admin",
+    },
+  },
+  // … any other plugins …
+];
+
+module.exports = {
+  projectConfig: {
+    // … your projectConfig …
+  },
+  plugins,
+};

@@ -8,7 +8,9 @@ build:
       - npm install --include=dev
     build:
       - npm ci --include=dev
-      - npx medusa build    
+      - npx medusa build
+      - echo ">>> Admin build output <<<"
+      - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
 
 run:
   command: npx medusa start

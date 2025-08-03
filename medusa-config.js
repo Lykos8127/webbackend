@@ -1,5 +1,3 @@
 // medusa-config.js
-require("ts-node").register({
-  /* optional: compilerOptions: { module: "commonjs" } */
-});
-module.exports = require("./medusa-config.ts");
+require("ts-node").register({ transpileOnly: true });
+module.exports = require("./medusa-config.ts").default || require("./medusa-config.ts");

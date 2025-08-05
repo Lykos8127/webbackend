@@ -22,7 +22,6 @@ run:
     - name: MEDUSA_PORT
       value: "8080"
     - name: DATABASE_URL
-      # just the URL—no "DATABASE_URL=" prefix
       value: postgres://postgres:E_b09.lgR@database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com:5432/database-1?sslmode=require&sslrootcert=./certs/rds-ca-bundle.pem
     - name: JWT_SECRET
       value: "4k2f6b1c5d3a837e5c0d2b8e6f2a3d8c"

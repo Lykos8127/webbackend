@@ -13,9 +13,7 @@ build:
       - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
 
 run:
-  command:  |
-    echo "DATABASE_URL is $DATABASE_URL"
-    echo "REDIS_URL    is $REDIS_URL"
+  command:  
     npx medusa start
   env:
     - name: NODE_ENV

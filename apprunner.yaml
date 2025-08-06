@@ -1,4 +1,4 @@
-version: "1.0"
+version: 1.0
 runtime: nodejs22
 
 build:
@@ -13,13 +13,14 @@ build:
       - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
 
 run:
-  command:  
-    npx medusa start
-
-instanceConfiguration:
-  cpu: 1024
-  memory: 2048
-  environment:
+  # Tell App Runner which port your app listens on, and which env var to use
+  network:
+    port: 8080
+    env: MEDUSA_PORT
+  # The start command for your service
+  command: npx medusa start
+  # Runtime environment variables
+  env:
     - name: NODE_ENV
       value: production
     - name: MEDUSA_ADMIN_BACKEND_URL
@@ -29,4 +30,5 @@ instanceConfiguration:
     - name: DATABASE_URL
       value: postgres://postgres:E_b09.lgR@database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com:5432/database-1?sslmode=require
     - name: JWT_SECRET
-      value: "4k2f6b1c5d3a837e5c0d2b8e6f2a3d8c"
+      value: 4k2f6b1c5d3a837e5c0d2b8e6f2a3d8c
+

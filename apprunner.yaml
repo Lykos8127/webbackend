@@ -21,24 +21,19 @@ run:
   command: npx medusa start
   # Runtime environment variables
   env:
-    - name: NODE_ENV
-      value: production
-    - name: MEDUSA_ADMIN_BACKEND_URL
-      value: https://api.myshop.com
-    - name: MEDUSA_PORT
-      value: "8080"
-    - name: PGHOST
-      value: database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com
-    - name: PGPORT
-      value: "5432"
-    - name: PGUSER
-      value: postgres
-    - name: PGPASSWORD
-      value: E_b09.lgR
-    - name: PGDATABASE
-      value: database-1
-    - name: PGSSLMODE
-      value: require
-    - name: JWT_SECRET
-      value: 4k2f6b1c5d3a837e5c0d2b8e6f2a3d8c
+  - name: NODE_ENV
+    value: production
+  - name: MEDUSA_ADMIN_BACKEND_URL
+    value: https://api.myshop.com
+  - name: MEDUSA_PORT
+    value: "8080"
 
+  # Single DATABASE_URL with SSL enabled:
+  - name: DATABASE_URL
+    value: >-
+      postgres://postgres:E_b09.lgR@
+      database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com:5432/database-1
+      ?ssl=true&rejectUnauthorized=false
+
+  - name: JWT_SECRET
+    value: 4k2f6b1c5d3a837e5c0d2b8e6f2a3d8c

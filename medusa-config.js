@@ -22,14 +22,8 @@ const config = {
   },
 
   plugins: [
-    {
-      resolve: "@medusajs/admin",
-      options: {
-        serve:  true,
-        outDir: ".medusa/server/public/admin",
-      },
-    },
-    // other plugins…
+    // List here any third-party or custom plugins you actually use.
+    // If you don’t have any, you can leave this array empty or even omit it entirely.
   ],
 }
 

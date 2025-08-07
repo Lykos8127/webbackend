@@ -19,7 +19,11 @@ run:
     env: MEDUSA_PORT
   # The start command for your service
   command: >-
-    /bin/sh -c 'cd .medusa/server && npx medusa start'
+    sh -c "echo PWD: $(pwd) && \
+           echo \"Root files:\" && ls -1 && \
+           echo \".medusa/server files:\" && ls -1 .medusa/server && \
+           echo \"Starting Medusa…\" && \
+           cd .medusa/server && npx medusa start"
   # Runtime environment variables
   env:
   - name: NODE_ENV

@@ -18,7 +18,7 @@ run:
     port: 8080
     env: MEDUSA_PORT
   # The start command for your service
-  command: /bin/sh -c "echo PWD is $(pwd); ls -R .; echo PGSSLROOTCERT is $PGSSLROOTCERT; npx medusa start"
+  command: npx medusa start
   # Runtime environment variables
   env:
   - name: NODE_ENV
@@ -28,11 +28,11 @@ run:
   - name: MEDUSA_PORT
     value: "8080"
 
-  - name: PGSSLROOTCERT
-    value: certs/rds-ca.pem
+  #- name: PGSSLROOTCERT
+   # value: certs/rds-ca.pem
 
   - name: DATABASE_URL
-    value: postgres://postgres:E_b09.lgR@database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com:5432/database-1?sslmode=verify-full
+    value: postgres://postgres:E_b09.lgR@database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com:5432/database-1?sslmode=no-verify
 
   - name: JWT_SECRET
     value: 4k2f6b1c5d3a837e5c0d2b8e6f2a3d8c

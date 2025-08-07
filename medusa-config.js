@@ -1,47 +1,36 @@
 // medusa-config.js
 
-/**
- * Medusa project configuration.
- * For more options, see: https://docs.medusajs.com/configuration
- */
-
 /** @type {import('@medusajs/medusa').ConfigModule} */
 const config = {
   projectConfig: {
-    // Database connection URL (Postgres)
-    database_url: process.env.DATABASE_URL,
-    // Optional Redis connection for caching and job queues
-    redis_url: process.env.REDIS_URL,
-    // Server HTTP settings
+    // v2-style Postgres URL
+    databaseUrl: process.env.DATABASE_URL,
+
+    // Optional Redis URL (if you provision one)
+    //redisUrl: process.env.REDIS_URL,
+
+    // HTTP / CORS / auth settings
     http: {
-      // Port on which Medusa will run
-      port: process.env.PORT || 9000,
-      // Secret for signing JWT tokens (must be set in production)
-      jwtSecret: process.env.JWT_SECRET,
-      // Secret for signing cookies; falls back to JWT secret
+      // Medusa reads process.env.PORT by default (9000 fallback)
+      jwtSecret:    process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET || process.env.JWT_SECRET,
+
+      // CORS settings for the storefront/admin
+      storeCors:    process.env.STORE_CORS || "*",
+      adminCors:    process.env.ADMIN_CORS || "*",
     },
-    // Directory where the admin UI is output (must match your build)
-    store_cors: process.env.STORE_CORS || "*",
-    admin_cors: process.env.ADMIN_CORS || "*",
   },
+
   plugins: [
     {
       resolve: "@medusajs/admin",
       options: {
-        // Serve the Admin UI from this directory
-        serve: true,
+        serve:  true,
         outDir: ".medusa/server/public/admin",
       },
     },
-    // Add other plugins below as needed:
-    // {
-    //   resolve: "medusa-plugin-stripe",
-    //   options: {
-    //     api_key: process.env.STRIPE_API_KEY,
-    //   },
-    // },
+    // other plugins…
   ],
-};
+}
 
-module.exports = config;
+module.exports = config

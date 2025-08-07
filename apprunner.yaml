@@ -8,11 +8,9 @@ build:
       - npm install --include=dev
     build:
       - npm ci --include=dev
-      # Build Medusa + Admin
       - npx medusa build
-      # DEBUG: show where we are and what got created
-      - echo "Working dir: $(pwd)"
-      - ls -R .medusa/server/public/admin || echo "→ No admin folder here!"
+      - echo ">>> Admin build output <<<"
+      - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
 
 run:
   # Tell App Runner which port your app listens on, and which env var to use

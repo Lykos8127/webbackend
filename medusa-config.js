@@ -20,6 +20,10 @@ const config = {
       adminCors:    process.env.ADMIN_CORS || "*",
     },
   },
+  admin: {
+    disable: false,    // enable the built-in Admin
+    path:    "/app",
+  },
 
   plugins: [
     // List here any third-party or custom plugins you actually use.

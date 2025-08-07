@@ -18,7 +18,8 @@ run:
     port: 8080
     env: MEDUSA_PORT
   # The start command for your service
-  command: /bin/sh -c "cd .medusa/server && npx medusa start"
+  command: >-
+    /bin/sh -c 'cd .medusa/server && npx medusa start'
   # Runtime environment variables
   env:
   - name: NODE_ENV

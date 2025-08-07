@@ -18,12 +18,8 @@ run:
     port: 8080
     env: MEDUSA_PORT
   # The start command for your service
-  command: >-
-    sh -c "echo PWD: $(pwd) && \
-           echo \"Root files:\" && ls -1 && \
-           echo \".medusa/server files:\" && ls -1 .medusa/server && \
-           echo \"Starting Medusa…\" && \
-           cd .medusa/server && npx medusa start"
+  command: '/bin/sh -c "pwd && echo Root of repo: && ls -R . && echo .medusa/server: && ls -R .medusa/server && cd .medusa/server && npx medusa start"'
+  env:
   # Runtime environment variables
   env:
   - name: NODE_ENV

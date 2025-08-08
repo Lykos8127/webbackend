@@ -11,6 +11,7 @@ build:
       - npx medusa build
       - echo ">>> Admin build output <<<"
       - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
+      - npm install --production --prefix .medusa/server
 
 run:
   # Tell App Runner which port your app listens on, and which env var to use
@@ -18,7 +19,7 @@ run:
     port: 8080
     env: MEDUSA_PORT
   # The start command for your service
-  command: "cd .medusa/server && npm install --production && npm run start"
+  command: "npm run start --prefix .medusa/server"
   # Runtime environment variables
   env:
   - name: NODE_ENV

@@ -11,6 +11,7 @@ build:
       - npx medusa build
       - echo ">>> Admin build output <<<"
       - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
+      - cp medusa-config.js .medusa/server/medusa-config.js
       - npm install --production --prefix .medusa/server
 
 run:

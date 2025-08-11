@@ -25,8 +25,6 @@ run:
   env:
   - name: NODE_ENV
     value: production
-  - name: MEDUSA_ADMIN_BACKEND_URL
-    value: https://api.myshop.com
   - name: MEDUSA_PORT
     value: "8080"
 

@@ -42,12 +42,16 @@ run:
 
   - name: STORE_CORS
     value: https://lykosmanufacture.com
-
+   
   - name: S3_BUCKET
-    value: medusa-assets-yourstore
+    value: "medusa-s3-bucket-lykos"
   - name: S3_REGION
-    value: eu-central-1
+    value: "eu-central-1"
   - name: S3_ENDPOINT
-    value: ""
+    value: ""     
   - name: S3_FILE_URL
-    value: https://medusa-assets-yourstore.s3.eu-central-1.amazonaws.com
+    value: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com"
+
+    
+
+

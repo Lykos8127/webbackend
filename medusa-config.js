@@ -40,12 +40,11 @@ const config = {
             resolve: "@medusajs/medusa/file-s3",
             id: "s3",
             options: {
-              bucket: process.env.S3_BUCKET,                 // e.g. medusa-assets-yourstore
-              region: process.env.S3_REGION,                 // e.g. eu-central-1
-              endpoint: process.env.S3_ENDPOINT || "",       // leave empty for AWS S3
-              file_url: process.env.S3_FILE_URL,             // e.g. https://<bucket>.s3.<region>.amazonaws.com
-
-              // If you use an App Runner instance role with S3 permissions, you can omit both:
+              bucket: process.env.S3_BUCKET,                 
+              region: process.env.S3_REGION,                 
+              endpoint: process.env.S3_ENDPOINT || "",       
+              file_url: process.env.S3_FILE_URL,             
+             
               access_key_id: process.env.S3_ACCESS_KEY_ID,
               secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
             },

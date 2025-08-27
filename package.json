@@ -16,7 +16,7 @@
   "dependencies": {
     "@medusajs/file-s3": "2.9.0",
     "@medusajs/framework": "^2.9.0",
-    "@medusajs/payment-stripe": "2.9.0",
+    "@medusajs/payment-stripe": "^2.9.0",
     "@medusajs/workflows-sdk": "^2.9.0"
   },
   "overrides": {

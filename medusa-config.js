@@ -1,9 +1,23 @@
 require("dotenv").config();
 const { defineConfig } = require("@medusajs/framework/utils");
 
+console.log("CORS envs:", {
+  STORE_CORS: process.env.STORE_CORS,
+  ADMIN_CORS: process.env.ADMIN_CORS,
+  AUTH_CORS: process.env.AUTH_CORS,
+});
+
 module.exports = defineConfig({
-  projectConfig: { /* ...as before... */ },
+  projectConfig: { 
+    http: {
+      storeCors: process.env.STORE_CORS,   // e.g. http://localhost:3000  (or * in dev)
+      adminCors: process.env.ADMIN_CORS,   // e.g. http://localhost:9000,http://localhost:7000,http://localhost:7001
+      authCors: process.env.AUTH_CORS,     
+    },
+  },
   admin: { disable: false, path: "/app" },
+
+
 
   modules: {
     user: {

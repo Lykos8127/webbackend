@@ -1,6 +1,7 @@
-// medusa-config.js
 require("dotenv").config()
 const { defineConfig } = require("@medusajs/framework/utils")
+console.log("[BOOT] STRIPE_API_KEY=", process.env.STRIPE_API_KEY ? "present" : "MISSING")
+
 
 module.exports = defineConfig({
   projectConfig: {
@@ -68,22 +69,19 @@ module.exports = defineConfig({
 
     // --- Payments (Stripe) ---
     payment: {
-      resolve: "@medusajs/medusa/payment",
-      options: {
-        providers: [
-          {
-            resolve: "@medusajs/payment-stripe",   // correct package for v2
-            id: "stripe",
-            options: {
-              apiKey: process.env.STRIPE_API_KEY,             // sk_test_...
-              webhookSecret: process.env.STRIPE_WEBHOOK_SECRET, // whsec_...
-              // optional:
-              // capture: true,
-              // automatic_payment_methods: true,
-            },
+    resolve: "@medusajs/medusa/payment",
+    options: {
+      providers: [
+        {
+          resolve: "@medusajs/payment-stripe",
+          id: "stripe",
+          options: {
+            apiKey: process.env.STRIPE_API_KEY,
+            webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
           },
-        ],
-      },
+        },
+      ],
     },
+  },
   },
 })

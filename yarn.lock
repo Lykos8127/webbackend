@@ -1521,7 +1521,7 @@
     zod "3.25.76"
     zod-validation-error "3.5.1"
 
-"@medusajs/fulfillment-manual@2.9", "@medusajs/fulfillment-manual@2.9.0":
+"@medusajs/fulfillment-manual@2.9.0":
   version "2.9.0"
   resolved "https://registry.npmjs.org/@medusajs/fulfillment-manual/-/fulfillment-manual-2.9.0.tgz"
   integrity sha512-efAfIzHdBAMVymgb+UCw1aq46dk7d+I/E73o5/AvM5BbKt1FSSy2JDwEWQAcBtaIvAmaCijpetW0zyQgQotfvA==
@@ -1577,7 +1577,7 @@
   resolved "https://registry.npmjs.org/@medusajs/locking/-/locking-2.9.0.tgz"
   integrity sha512-sy8npVZQL/rwi9Pkbk3McvPtYtAr+DfQrXdXf9uO1nspxMfUOE7517CiHdtp7Mwr9WvsnZxRHDcUx8VU3bNj0Q==
 
-"@medusajs/medusa@^2.9.0":
+"@medusajs/medusa@2.9.0":
   version "2.9.0"
   resolved "https://registry.npmjs.org/@medusajs/medusa/-/medusa-2.9.0.tgz"
   integrity sha512-1LHVQPZxKdPxRaoYCtFxdCHospFuAgq3nb0pL35dr9tqqhaU067cLxu9kV5VeiNDrKkNNiULzeCH3tAGb+8iRg==

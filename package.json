@@ -6,7 +6,7 @@
   },
   "devDependencies": {
     "@medusajs/cli": "^2.9.0",
-    "@medusajs/medusa": "^2.9.0",
+    "@medusajs/medusa": "2.9.0",
     "@swc/core": "^1.5.7",
     "@types/node": "^24.3.0",
     "ts-node": "^10.9.2",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@medusajs/file-s3": "2.9.0",
     "@medusajs/framework": "^2.9.0",
-    "@medusajs/fulfillment-manual": "2.9",
+    "@medusajs/fulfillment-manual": "2.9.0",
     "@medusajs/payment-stripe": "2.9.0",
     "@medusajs/workflows-sdk": "^2.9.0"
   },

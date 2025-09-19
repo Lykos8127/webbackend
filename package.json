@@ -6,7 +6,7 @@
   },
   "devDependencies": {
     "@medusajs/cli": "^2.9.0",
-    "@medusajs/medusa": "2.9.0",
+    "@medusajs/medusa": "2.10",
     "@swc/core": "^1.5.7",
     "@types/node": "^24.3.0",
     "ts-node": "^10.9.2",
@@ -14,11 +14,13 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "@medusajs/file-s3": "2.9.0",
-    "@medusajs/framework": "^2.9.0",
-    "@medusajs/fulfillment-manual": "2.9.0",
-    "@medusajs/payment-stripe": "2.9.0",
-    "@medusajs/workflows-sdk": "^2.9.0"
+    "@medusajs/file": "2.10",
+    "@medusajs/file-s3": "2.10",
+    "@medusajs/framework": "2.10",
+    "@medusajs/fulfillment-manual": "2.10",
+    "@medusajs/payment-stripe": "2.10",
+    "@medusajs/workflows-sdk": "^2.9.0",
+    "aws-sdk": "^2.1692.0"
   },
   "overrides": {
     "@medusajs/*": "2.9.0"

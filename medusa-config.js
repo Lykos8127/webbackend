@@ -45,6 +45,7 @@ module.exports = defineConfig({
                   id: "s3",
                   resolve: "@medusajs/file-s3",
                   options: {
+                    file_url: process.env.S3_FILE_URL, 
                     region: process.env.S3_REGION,
                     bucket: process.env.S3_BUCKET,
                     access_key_id: process.env.AWS_ACCESS_KEY_ID,

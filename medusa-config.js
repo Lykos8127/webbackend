@@ -37,19 +37,22 @@ module.exports = defineConfig({
     ...(process.env.S3_BUCKET
       ? {
           file: {
-            resolve: "@medusajs/file",
+            resolve: "@medusajs/medusa/file",
+      options: {
+        defaultProvider: "s3",
+        providers: [
+          {
+            id: "s3",
+            resolve: "@medusajs/medusa/file-s3",
             options: {
-              defaultProvider: "s3",
-              providers: [
-                {
-                  id: "s3",
-                  resolve: "@medusajs/file-s3",
-                  options: {
-                    file_url: process.env.S3_FILE_URL, 
-                    region: process.env.S3_REGION,
-                    bucket: process.env.S3_BUCKET,
-                    access_key_id: process.env.AWS_ACCESS_KEY_ID,
-                    secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
+              // MUST be your public base URL (no trailing slash)
+              file_url: process.env.S3_FILE_URL, 
+              region: process.env.S3_REGION,                 // eu-central-1
+              bucket: process.env.S3_BUCKET,                 // medusa-s3-bucket-lykos
+
+              // Use IAM role in production if you want; keep keys locally
+              access_key_id: process.env.AWS_ACCESS_KEY_ID,
+              secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
                   },
                 },
               ],

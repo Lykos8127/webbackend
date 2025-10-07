@@ -26,7 +26,10 @@ module.exports = defineConfig({
       resolve: "@medusajs/user",
       options: { jwt_secret: process.env.JWT_SECRET || "dev" },
     },
-   
+    auth: {
+      resolve: "@medusajs/auth",
+      options: { providers: [{ resolve: "@medusajs/auth-emailpass", id: "emailpass" }] },
+    },
 
     // Files (S3) — v2 modules
     ...(process.env.S3_BUCKET

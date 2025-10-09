@@ -3,18 +3,48 @@ runtime: nodejs22
 
 build:
   commands:
-    - npm ci
-    - npx medusa build
-    - cp medusa-config.js .medusa/server/medusa-config.js
-    - npm ci --omit=dev --prefix .medusa/server
+    pre-build:
+      - rm -rf node_modules package-lock.json
+      - npm install --include=dev
+    build:
+      - npm ci --include=dev
+      - npx medusa build
+      - echo ">>> Admin build output <<<"
+      - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
+      - cp medusa-config.js .medusa/server/medusa-config.js
+      - npm install --production --prefix .medusa/server
 
 run:
+  # Tell App Runner which port your app listens on, and which env var to use
   network:
     port: 8080
-  command: "node .medusa/server/index.js"
-  health_check:
-    path: /health
-    interval: 10
-    timeout: 5
-    healthy_threshold: 3
-    unhealthy_threshold: 3
+    env: MEDUSA_PORT
+  # The start command for your service
+  command: "npm run start --prefix .medusa/server"
+  # Runtime environment variables
+  env:
+  - name: NODE_ENV
+    value: production
+  - name: MEDUSA_PORT
+    value: "8080"
+
+  #- name: PGSSLROOTCERT
+   # value: certs/rds-ca.pem
+
+  - name: DATABASE_URL
+    value: postgres://postgres:E_b09.lgR@database-1.cjuao6qq8txz.eu-central-1.rds.amazonaws.com:5432/database-1?sslmode=no-verify
+
+  - name: JWT_SECRET
+    value: 4k2f6b1c5d3a837e5c0d2b8e6f2a3d8c
+  
+  - name: COOKIE_SECRET
+    value: 8844c2ef3f0ecfeeed5afe630c2665cb07afabf6cae5adfeb9f2ec02b9cb74a7
+
+  - name: STORE_CORS
+    value: https://lykosmanufacture.com
+
+  
+  
+
+
+  

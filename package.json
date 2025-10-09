@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "npx medusa develop",
     "build": "npx medusa build",
-    "start": "node .medusa/server"
+    "start": "node .medusa/server/index.js"
   },
   "devDependencies": {
     "@medusajs/cli": "^2.9.0",

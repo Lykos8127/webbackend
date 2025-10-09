@@ -3,16 +3,10 @@ runtime: nodejs22
 
 build:
   commands:
-    pre-build:
-      - rm -rf node_modules package-lock.json
-      - npm install --include=dev
-    build:
-      - npm ci --include=dev
-      - npx medusa build
-      - echo ">>> Admin build output <<<"
-      - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
-      - cp medusa-config.js .medusa/server/medusa-config.js
-      - npm install --production --prefix .medusa/server
+    - npm ci
+    - npx medusa build
+    - cp medusa-config.js .medusa/server/medusa-config.js
+    - npm ci --omit=dev --prefix .medusa/server
 
 run:
   # Tell App Runner which port your app listens on, and which env var to use
@@ -20,7 +14,7 @@ run:
     port: 8080
     env: MEDUSA_PORT
   # The start command for your service
-  command: "npm run start --prefix .medusa/server"
+  command: "node .medusa/server/index.js"
   # Runtime environment variables
   env:
   - name: NODE_ENV

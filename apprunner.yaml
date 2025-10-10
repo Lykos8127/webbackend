@@ -10,7 +10,8 @@ build:
       - npm ci --include=dev
       - npx medusa build
       - echo ">>> Admin build output <<<"
-      - ls -R .medusa/server/public/admin || echo "— no admin folder found —"
+      - ls -R .medusa || true
+      - cat .medusa/server/package.json || true
       - cp medusa-config.js .medusa/server/medusa-config.js
       - npm install --production --prefix .medusa/server
 
@@ -20,7 +21,7 @@ run:
     port: 8080
     env: MEDUSA_PORT
   # The start command for your service
-  command: "node .medusa/server/dist/index.js"
+  command: "node .medusa/server/dist/index.js"  
   # Runtime environment variables
   env:
   - name: NODE_ENV

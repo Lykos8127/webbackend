@@ -20,7 +20,7 @@ run:
     port: 8080
     env: MEDUSA_PORT
   # The start command for your service
-  command: "npm run start --prefix .medusa/server"
+  command: "npm run start"
   # Runtime environment variables
   env:
   - name: NODE_ENV

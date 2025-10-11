@@ -2,10 +2,10 @@
   "scripts": {
     "dev": "npx medusa develop",
     "build": "npx medusa build",
-    "start": "node .medusa/server/index.js"
+    "start": "medusa start -p ${PORT:-8080}"
   },
   "devDependencies": {
-    "@medusajs/cli": "^2.9.0",
+    "@medusajs/cli": "^2.10.0",
     "@medusajs/medusa": "2.10",
     "@swc/core": "^1.5.7",
     "@types/node": "^24.3.0",
@@ -19,10 +19,8 @@
     "@medusajs/framework": "2.10",
     "@medusajs/fulfillment-manual": "2.10",
     "@medusajs/payment-stripe": "2.10",
-    "@medusajs/workflows-sdk": "^2.9.0",
+    "@medusajs/workflows-sdk": "^2.10.0",
     "aws-sdk": "^2.1692.0"
-  },
-  "overrides": {
-    "@medusajs/*": "2.9.0"
   }
+ 
 }

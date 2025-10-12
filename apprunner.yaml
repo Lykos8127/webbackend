@@ -14,6 +14,7 @@ build:
       - cat .medusa/server/package.json || true
       - cp medusa-config.js .medusa/server/medusa-config.js
       - npm install --production --prefix .medusa/server
+      - mkdir -p public && cp -R .medusa/server/public/admin public/admin
 
 run:
   # Tell App Runner which port your app listens on, and which env var to use

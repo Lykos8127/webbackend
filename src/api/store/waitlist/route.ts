@@ -1,13 +1,14 @@
 // src/api/store/waitlist/route.ts
-import type { Request, Response } from "express"
+import type { Request, Response } from "express";
 
 export const POST = async (req: Request, res: Response) => {
   try {
-    const { email, campaign = "drop-001" } = req.body || {}
+    const { email, campaign = "drop-001" } = req.body ?? {};
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return res.status(400).json({ message: "Invalid email" })
+      return res.status(400).json({ message: "Invalid email" });
     }
 
+    // Call Brevo
     const r = await fetch("https://api.brevo.com/v3/contacts", {
       method: "POST",
       headers: {
@@ -17,20 +18,18 @@ export const POST = async (req: Request, res: Response) => {
       },
       body: JSON.stringify({
         email,
-        listIds: [Number(process.env.BREVO_LIST_ID)], // set in env
+        listIds: [Number(process.env.BREVO_LIST_ID)],
         updateEnabled: true,
         attributes: { SOURCE: "LandingPage", CAMPAIGN: campaign },
       }),
-    })
+    });
 
-    const data = await r.json()
-    if (!r.ok) return res.status(r.status).json(data)
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) return res.status(r.status).json(data);
 
-    // (optional) mirror to DB here …
-
-    return res.status(200).json({ ok: true })
+    return res.status(200).json({ ok: true });
   } catch (e: any) {
-    console.error(e)
-    return res.status(500).json({ message: "Server error" })
+    console.error(e);
+    return res.status(500).json({ message: "Server error" });
   }
-}
+};

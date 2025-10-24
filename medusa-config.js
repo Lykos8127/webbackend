@@ -33,28 +33,38 @@ module.exports = defineConfig({
 
     // Files (S3) — v2 modules
     ...(process.env.S3_BUCKET
-      ? {
-          file: {
-            resolve: "@medusajs/file",
-            options: {
-              defaultProvider: "s3",
-              providers: [
-                {
-                  id: "s3",
-                  resolve: "@medusajs/file-s3",
-                  options: {
-                    file_url: process.env.S3_FILE_URL, // e.g. https://<bucket>.s3.<region>.amazonaws.com
-                    region: process.env.S3_REGION,
-                    bucket: process.env.S3_BUCKET,
-                    access_key_id: process.env.AWS_ACCESS_KEY_ID,
-                    secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
-                  },
-                },
-              ],
+  ? {
+      file: {
+        resolve: "@medusajs/file",
+        options: {
+          defaultProvider: "s3",
+          providers: [
+            {
+              id: "s3",
+              resolve: "@medusajs/file-s3",
+              options: {
+                region: process.env.S3_REGION,          // e.g. "eu-central-1"
+                bucket: process.env.S3_BUCKET,          // e.g. "medusa-s3-bucket-lykos"
+
+                // 👇 IMPORTANT: this is what becomes images[i].url
+                base_url:
+                  process.env.S3_BASE_URL ||
+                  `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com`,
+
+                // Leave these OUT if using App Runner instance role:
+                // access_key_id: process.env.AWS_ACCESS_KEY_ID,
+                // secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
+
+                // Only set endpoint/force_path_style if using MinIO or custom S3:
+                // endpoint: process.env.S3_ENDPOINT,
+                // force_path_style: false,
+              },
             },
-          },
-        }
-      : {}),
+          ],
+        },
+      },
+    }
+  : {}),
 
     // Fulfillment (Manual) — v2 entry
     fulfillment: {

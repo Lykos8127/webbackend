@@ -44,26 +44,29 @@ module.exports = defineConfig({
 
     // Files (S3)
     // Files (S3)
+  // Files (S3) — v2.10
   file: {
-  resolve: "@medusajs/medusa/file",
-  options: {
-    defaultProvider: "s3",
-    providers: [
-      {
-        id: "s3",
-        resolve: "@medusajs/medusa/file-s3",
-        options: {
-          region: "eu-central-1",
-          bucket: "medusa-s3-bucket-lykos",
-          file_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
-          // (optional but fine)
-          base_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
-          // leave credentials OUT (App Runner instance role will be used)
+    resolve: "@medusajs/file",
+    options: {
+      defaultProvider: "s3",
+      providers: [
+        {
+          id: "s3",
+          resolve: "@medusajs/file-s3",
+          options: {
+            region: "eu-central-1",
+            bucket: "medusa-s3-bucket-lykos",
+            // This is used to construct images[i].url
+            file_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
+            // Harmless to include; older paths may read this:
+            base_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
+            // Do NOT set access_key_id/secret_access_key in App Runner (uses instance role)
+          },
         },
-      },
-    ],
+      ],
+    },
   },
-},
+
 
 
     // Fulfillment (Manual)

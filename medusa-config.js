@@ -1,6 +1,12 @@
 // medusa-config.js
 require("dotenv").config()
 const { defineConfig } = require("@medusajs/framework/utils")
+console.log("[S3 check]", {
+  bucket: "medusa-s3-bucket-lykos",
+  region: "eu-central-1",
+  public: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com"
+})
+
 
 const BUCKET = "medusa-s3-bucket-lykos"
 const REGION = "eu-central-1"
@@ -39,25 +45,24 @@ module.exports = defineConfig({
     // Files (S3)
     // Files (S3)
   file: {
-    resolve: "@medusajs/file",
-    options: {
-      defaultProvider: "s3",
-      providers: [
-        {
-          id: "s3",
-          resolve: "@medusajs/file-s3",
-          options: {
-            region: REGION,
-            bucket: BUCKET,
-            // both are fine; v2.10 reads `file_url`
-            file_url: PUBLIC_URL,
-            base_url: PUBLIC_URL,
-            // do NOT set access_key_id/secret_access_key when using App Runner role
-          },
+  resolve: "@medusajs/file",
+  options: {
+    defaultProvider: "s3",
+    providers: [
+      {
+        id: "s3",
+        resolve: "@medusajs/file-s3",
+        options: {
+          region: "eu-central-1",
+          bucket: "medusa-s3-bucket-lykos",
+          file_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
+          base_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
+          // no access_key_id / secret_access_key in App Runner (use instance role)
         },
-      ],
-    },
+      },
+    ],
   },
+},
 
 
     // Fulfillment (Manual)

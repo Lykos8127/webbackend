@@ -51,7 +51,6 @@ module.exports = defineConfig({
                     region: REGION,
                     bucket: BUCKET,
                     file_url: PUBLIC_URL,   // <-- REQUIRED in v2.10
-                    base_url: PUBLIC_URL,   
                   },
                 },
               ],

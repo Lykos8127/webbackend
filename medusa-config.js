@@ -2,14 +2,19 @@
 require("dotenv").config()
 const { defineConfig } = require("@medusajs/framework/utils")
 
-// 🔒 Trim all S3-related envs to kill stray spaces/newlines
-const S3_BUCKET = process.env.S3_BUCKET?.trim()
-const S3_REGION = process.env.S3_REGION?.trim()
+const clean = (s) => (s ? s.replace(/\s/g, "").trim() : undefined)
+const S3_BUCKET = clean(process.env.S3_BUCKET)
+const S3_REGION = clean(process.env.S3_REGION)
 const S3_BASE_URL =
-  (process.env.S3_BASE_URL && process.env.S3_BASE_URL.trim()) ||
+  clean(process.env.S3_BASE_URL) ||
   (S3_BUCKET && S3_REGION
     ? `https://${S3_BUCKET}.s3.${S3_REGION}.amazonaws.com`
     : undefined)
+
+if (!/^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(S3_BUCKET || "")) {
+  throw new Error(`S3_BUCKET invalid: "${S3_BUCKET}". Re-enter it (no spaces/newlines).`)
+}
+console.log("[S3 check]", { S3_BUCKET, S3_REGION, S3_BASE_URL })
 
 module.exports = defineConfig({
   projectConfig: {

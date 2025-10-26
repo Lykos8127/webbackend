@@ -2,19 +2,11 @@
 require("dotenv").config()
 const { defineConfig } = require("@medusajs/framework/utils")
 
-const clean = (s) => (s ? s.replace(/\s/g, "").trim() : undefined)
-const S3_BUCKET = clean(process.env.S3_BUCKET)
-const S3_REGION = clean(process.env.S3_REGION)
-const S3_BASE_URL =
-  clean(process.env.S3_BASE_URL) ||
-  (S3_BUCKET && S3_REGION
-    ? `https://${S3_BUCKET}.s3.${S3_REGION}.amazonaws.com`
-    : undefined)
+const BUCKET = "medusa-s3-bucket-lykos"
+const REGION = "eu-central-1"
+const PUBLIC_URL = `https://${BUCKET}.s3.${REGION}.amazonaws.com`
 
-if (!/^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(S3_BUCKET || "")) {
-  throw new Error(`S3_BUCKET invalid: "${S3_BUCKET}". Re-enter it (no spaces/newlines).`)
-}
-console.log("[S3 check]", { S3_BUCKET, S3_REGION, S3_BASE_URL })
+
 
 module.exports = defineConfig({
   projectConfig: {
@@ -56,17 +48,10 @@ module.exports = defineConfig({
                   id: "s3",
                   resolve: "@medusajs/file-s3",
                   options: {
-                    region: "eu-central-1",
-                    bucket: "medusa-s3-bucket-lykos",
-                    base_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
-
-                    // If App Runner uses an instance role, keep keys unset
-                    // access_key_id: process.env.AWS_ACCESS_KEY_ID,
-                    // secret_access_key: process.env.AWS_SECRET_ACCESS_KEY,
-
-                    // Only for MinIO/compat:
-                    // endpoint: process.env.S3_ENDPOINT,
-                    // force_path_style: false,
+                    region: REGION,
+                    bucket: BUCKET,
+                    file_url: PUBLIC_URL,   // <-- REQUIRED in v2.10
+                    base_url: PUBLIC_URL,   
                   },
                 },
               ],

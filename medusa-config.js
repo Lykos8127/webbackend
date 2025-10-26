@@ -56,9 +56,9 @@ module.exports = defineConfig({
                   id: "s3",
                   resolve: "@medusajs/file-s3",
                   options: {
-                    region: S3_REGION,         // e.g. "eu-central-1"
-                    bucket: S3_BUCKET,         // e.g. "medusa-s3-bucket-lykos"
-                    base_url: S3_BASE_URL,     // builds images[i].url
+                    region: "eu-central-1",
+                    bucket: "medusa-s3-bucket-lykos",
+                    base_url: "https://medusa-s3-bucket-lykos.s3.eu-central-1.amazonaws.com",
 
                     // If App Runner uses an instance role, keep keys unset
                     // access_key_id: process.env.AWS_ACCESS_KEY_ID,

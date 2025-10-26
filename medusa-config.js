@@ -37,27 +37,28 @@ module.exports = defineConfig({
     },
 
     // Files (S3)
-    ...(S3_BUCKET
-      ? {
-          file: {
-            resolve: "@medusajs/file",
-            options: {
-              defaultProvider: "s3",
-              providers: [
-                {
-                  id: "s3",
-                  resolve: "@medusajs/file-s3",
-                  options: {
-                    region: REGION,
-                    bucket: BUCKET,
-                    file_url: PUBLIC_URL,   // <-- REQUIRED in v2.10
-                  },
-                },
-              ],
-            },
+    // Files (S3)
+  file: {
+    resolve: "@medusajs/file",
+    options: {
+      defaultProvider: "s3",
+      providers: [
+        {
+          id: "s3",
+          resolve: "@medusajs/file-s3",
+          options: {
+            region: REGION,
+            bucket: BUCKET,
+            // both are fine; v2.10 reads `file_url`
+            file_url: PUBLIC_URL,
+            base_url: PUBLIC_URL,
+            // do NOT set access_key_id/secret_access_key when using App Runner role
           },
-        }
-      : {}),
+        },
+      ],
+    },
+  },
+
 
     // Fulfillment (Manual)
     fulfillment: {

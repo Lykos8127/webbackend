@@ -488,7 +488,7 @@ const primaryButtonStyle: CSSProperties = {
 
 export const config = defineWidgetConfig({
   zone: "product_variant.details.after",
-  label: "Variant Images",
+  
 })
 
 function extractAltText(

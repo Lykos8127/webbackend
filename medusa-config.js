@@ -123,5 +123,9 @@ module.exports = defineConfig({
         ],
       },
     },
+
+    variantImages: {
+      resolve: "./src/modules/variant-images",
+    },
   },
 })

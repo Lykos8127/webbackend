@@ -1,0 +1,21 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - node -v || true
+      - npm ci
+  build:
+    commands:
+      # 1) Dateien für Migration generieren (kein DB-Zugriff nötig)
+      - npx medusa db:generate variant-images
+
+      # 2) Sofort auf die DB anwenden (braucht VPC-Zugriff auf Aurora)
+      - npx medusa db:migrate
+
+artifacts:
+  files:
+    - "migrations/**"
+    - "packages/**"
+    - "apps/**"
+    - "package.json"
+    - "package-lock.json"

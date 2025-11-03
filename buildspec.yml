@@ -6,13 +6,15 @@ phases:
       - curl -I https://github.com || true
       - curl -I https://registry.npmjs.org || true
   install:
+    runtime-versions:
+      nodejs: 22
     commands:
+      - node -v
       - npm ci
   build:
     commands:
-      - npx medusa db:generate variant-images
+      - npx medusa db:generate variantImages
       - npx medusa db:migrate
-
 artifacts:
   files:
     - "migrations/**"

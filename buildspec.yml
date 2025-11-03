@@ -1,15 +1,16 @@
 version: 0.2
 phases:
+  pre_build:
+    commands:
+      - echo "Connectivity check…"
+      - curl -I https://github.com || true
+      - curl -I https://registry.npmjs.org || true
   install:
     commands:
-      - node -v || true
       - npm ci
   build:
     commands:
-      # 1) Dateien für Migration generieren (kein DB-Zugriff nötig)
       - npx medusa db:generate variant-images
-
-      # 2) Sofort auf die DB anwenden (braucht VPC-Zugriff auf Aurora)
       - npx medusa db:migrate
 
 artifacts:

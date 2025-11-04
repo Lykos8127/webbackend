@@ -41,6 +41,10 @@ const VariantImagesWidget = ({
         `/admin/variants/${variantId}/variant-images`,
         {
           credentials: "include",
+          cache: "no-store",
+          headers: {
+            "Cache-Control": "no-cache",
+          },
         }
       )
 
@@ -184,8 +188,10 @@ const VariantImagesWidget = ({
         {
           method: "POST",
           credentials: "include",
+          cache: "no-store",
           headers: {
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
           },
           body: JSON.stringify(payload),
         }

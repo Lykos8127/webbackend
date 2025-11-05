@@ -48,7 +48,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         "options.option",
         "prices",
         "prices.price_rules",
-        "inventory_items",
       ],
     }
   )

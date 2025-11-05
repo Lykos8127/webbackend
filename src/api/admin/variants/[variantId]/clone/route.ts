@@ -2,7 +2,11 @@ import type {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { MedusaError } from "@medusajs/framework/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/framework/utils"
 import { createProductVariantsWorkflow } from "@medusajs/core-flows"
 
 type VariantOptionValue = {
@@ -38,35 +42,71 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     )
   }
 
-  const productModuleService = req.scope.resolve("product")
+  const remoteQuery = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_QUERY
+  ) as (query: any) => Promise<any[]>
 
-  const [sourceVariant] = await productModuleService.listProductVariants(
-    { id: variantId },
-    {
-      relations: [
-        "options",
-        "options.option",
-        "prices",
-      ],
-    }
-  )
+  const query = remoteQueryObjectFromString({
+    entryPoint: "product_variant",
+    variables: {
+      filters: { id: variantId },
+    },
+    fields: remapKeysForVariant([
+      "id",
+      "title",
+      "product_id",
+      "sku",
+      "barcode",
+      "ean",
+      "upc",
+      "allow_backorder",
+      "manage_inventory",
+      "requires_shipping",
+      "hs_code",
+      "origin_country",
+      "mid_code",
+      "material",
+      "weight",
+      "length",
+      "height",
+      "width",
+      "variant_rank",
+      "metadata",
+      "options.id",
+      "options.value",
+      "options.option_id",
+      "options.option.title",
+      "price_set.id",
+      "price_set.prices.id",
+      "price_set.prices.amount",
+      "price_set.prices.currency_code",
+      "price_set.prices.min_quantity",
+      "price_set.prices.max_quantity",
+      "price_set.prices.region_id",
+      "price_set.prices.price_rules.id",
+      "price_set.prices.price_rules.attribute",
+      "price_set.prices.price_rules.value",
+    ]),
+  })
 
-  if (!sourceVariant) {
+  const [variantRaw] = await remoteQuery(query)
+
+  if (!variantRaw) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
       `Variant ${variantId} was not found`
     )
   }
 
-  const variantData = sourceVariant as any
+  const sourceVariant = remapVariantResponse(variantRaw)
 
-  const optionsPayload = buildOptionsPayload(variantData.options ?? [])
-  const pricesPayload = buildPricesPayload(variantData.prices ?? [])
+  const optionsPayload = buildOptionsPayload(sourceVariant.options ?? [])
+  const pricesPayload = buildPricesPayload(sourceVariant.prices ?? [])
   const inventoryPayload = buildInventoryPayload(
-    variantData.inventory_items ?? []
+    (sourceVariant as any).inventory_items ?? []
   )
 
-  const productId = sourceVariant.product_id ?? variantData.product?.id
+  const productId = sourceVariant.product_id
 
   if (!productId) {
     throw new MedusaError(
@@ -178,4 +218,55 @@ function buildInventoryPayload(items: VariantInventoryItem[]) {
       inventory_item_id: item.inventory_item_id,
       required_quantity: item.required_quantity ?? undefined,
     }))
+}
+
+function remapVariantResponse(variant: any) {
+  if (!variant) {
+    return variant
+  }
+
+  const response = {
+    ...variant,
+    prices: variant.price_set?.prices?.map((price: any) => ({
+      id: price.id,
+      amount: price.amount,
+      currency_code: price.currency_code,
+      min_quantity: price.min_quantity,
+      max_quantity: price.max_quantity,
+      variant_id: variant.id,
+      region_id: price.region_id,
+      created_at: price.created_at,
+      updated_at: price.updated_at,
+      rules: buildPriceRules(price),
+    })),
+  }
+
+  delete response.price_set
+
+  return response
+}
+
+function buildPriceRules(price: any) {
+  const rules: Record<string, string> = {}
+
+  for (const priceRule of price?.price_rules || []) {
+    const ruleAttribute = priceRule.attribute
+    if (ruleAttribute) {
+      rules[ruleAttribute] = priceRule.value
+    }
+  }
+
+  return rules
+}
+
+function remapKeysForVariant(selectFields: string[]) {
+  const isPricing = (fieldName: string) =>
+    fieldName.startsWith("prices.") || fieldName.startsWith("*prices")
+
+  const variantFields = selectFields.filter((field) => !isPricing(field))
+  const pricingFields = selectFields
+    .filter((field) => isPricing(field))
+    .map((field) => field.replace("prices.", "price_set.prices."))
+
+  return [...variantFields, ...pricingFields]
 }

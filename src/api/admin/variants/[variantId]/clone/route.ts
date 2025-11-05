@@ -32,6 +32,19 @@ type VariantInventoryItem = {
   required_quantity?: number | null
 }
 
+type CloneVariantRequest = {
+  overrides?: CloneVariantOverrides
+}
+
+type CloneVariantOverrides = {
+  title?: string
+  sku?: string
+  barcode?: string
+  ean?: string
+  upc?: string
+  option_overrides?: Record<string, string>
+}
+
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { variantId } = req.params as { variantId?: string }
 
@@ -98,9 +111,15 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     )
   }
 
+  const payload = (req.body ?? {}) as CloneVariantRequest
+  const overrides = payload.overrides ?? {}
+
   const sourceVariant = remapVariantResponse(variantRaw)
 
-  const optionsPayload = buildOptionsPayload(sourceVariant.options ?? [])
+  const optionsPayload = buildOptionsPayload(
+    sourceVariant.options ?? [],
+    overrides.option_overrides ?? {}
+  )
   const pricesPayload = buildPricesPayload(sourceVariant.prices ?? [])
   const inventoryPayload = buildInventoryPayload(
     (sourceVariant as any).inventory_items ?? []
@@ -117,7 +136,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
   const clonedVariantInput: any = {
     product_id: productId,
-    title: buildCloneTitle(sourceVariant.title),
+    title:
+      normalizeString(overrides.title) ?? buildCloneTitle(sourceVariant.title),
     allow_backorder: sourceVariant.allow_backorder ?? false,
     manage_inventory: sourceVariant.manage_inventory ?? true,
     requires_shipping: sourceVariant.requires_shipping ?? true,
@@ -130,11 +150,11 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     height: sourceVariant.height ?? null,
     width: sourceVariant.width ?? null,
     metadata: sourceVariant.metadata ?? null,
-    // Unique identifiers are cleared to prevent conflicts
-    sku: undefined,
-    barcode: undefined,
-    ean: undefined,
-    upc: undefined,
+    variant_rank: sourceVariant.variant_rank ?? null,
+    sku: normalizeString(overrides.sku),
+    barcode: normalizeString(overrides.barcode),
+    ean: normalizeString(overrides.ean),
+    upc: normalizeString(overrides.upc),
     options: optionsPayload,
     prices: pricesPayload,
     inventory_items: inventoryPayload,
@@ -179,16 +199,38 @@ function extractOptionValue(value: VariantOptionValue["value"]) {
   return ""
 }
 
-function buildOptionsPayload(options: VariantOptionValue[]) {
+function buildOptionsPayload(
+  options: VariantOptionValue[],
+  overrides: Record<string, string>
+) {
+  const normalizedOverrides = Object.entries(overrides).reduce<
+    Record<string, string>
+  >((acc, [key, value]) => {
+    const title = key?.trim()
+    const overrideValue = value?.trim()
+    if (title && overrideValue) {
+      acc[title.toLowerCase()] = overrideValue
+    }
+    return acc
+  }, {})
+
   return options.reduce<Record<string, string>>((acc, optionValue) => {
     const title = optionValue.option?.title ?? optionValue.option_id ?? ""
-    const value = extractOptionValue(optionValue.value)
-
-    if (!title || !value) {
+    if (!title) {
       return acc
     }
 
-    acc[title] = value
+    const overrideValue = normalizedOverrides[title.toLowerCase()]
+    const finalValue = overrideValue || extractOptionValue(optionValue.value)
+
+    if (!finalValue) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Option "${title}" requires a value.`
+      )
+    }
+
+    acc[title] = finalValue
     return acc
   }, {})
 }
@@ -218,6 +260,14 @@ function buildInventoryPayload(items: VariantInventoryItem[]) {
       inventory_item_id: item.inventory_item_id,
       required_quantity: item.required_quantity ?? undefined,
     }))
+}
+
+function normalizeString(value?: string | null) {
+  if (typeof value !== "string") {
+    return undefined
+  }
+  const trimmed = value.trim()
+  return trimmed.length ? trimmed : undefined
 }
 
 function remapVariantResponse(variant: any) {
